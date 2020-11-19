@@ -22,6 +22,7 @@ const ARGV: &[*const i8] = &[
     core::ptr::null(),
 ];
 #[cfg(unix)]
+#[link_name = "__environ"]
 extern "C" {
     static environ: *const *const i8;
 }
