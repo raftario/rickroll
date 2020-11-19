@@ -47,7 +47,8 @@ unsafe extern "C" fn mainCRTStartup() -> ! {
 #[cfg(unix)]
 #[panic_handler]
 unsafe fn panic(_: &core::panic::PanicInfo) -> ! {
-    libc::exit(1)
+    syscall::platform::syscall1(syscall::platform::nr::EXIT, 1);
+    core::hint::unreachable_unchecked()
 }
 
 #[cfg(windows)]
