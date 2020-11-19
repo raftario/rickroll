@@ -1,0 +1,44 @@
+name: CI
+on: push
+
+jobs:
+  build:
+    name: Build
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macOS-latest]
+        include:
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-musl
+            bin: target/release/rickroll
+          - os: windows-latest
+            target: x86_64-pc-windows-msvc
+            bin: target/release/rickroll.exe
+          - os: macOS-latest
+            target: x86_64-apple-darwin
+            bin: target/release/rickroll
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          profile: minimal
+          target: ${{ matrix.target }}
+          override: true
+
+      - name: Build binary
+        uses: actions-rs/cargo@v1
+        with:
+          command: build
+          args: --release
+      - name: Strip binary
+        if: runner.os != 'Windows'
+        run: strip ${{ matrix.bin }}
+
+      - name: Upload binary
+        uses: actions/upload-artifact@v2
+        with:
+          name: rickroll-${{ matrix.target }}
+          path: ${{ matrix.bin }}

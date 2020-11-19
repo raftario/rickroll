@@ -1,0 +1,21 @@
+[package]
+name = "rickroll"
+version = "0.1.0"
+authors = ["Raphaël Thériault <raphael_theriault@outlook.com>"]
+edition = "2018"
+license = "WTFPL"
+description = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+
+[target.'cfg(unix)'.dependencies]
+libc = { version = "0.2.80", default-features = false }
+
+[target.'cfg(windows)'.dependencies]
+winapi = { version = "0.3.9", default-features = false, features = ["processthreadsapi", "shellapi", "winuser"] }
+
+[profile.dev]
+panic = "abort"
+
+[profile.release]
+opt-level = "z"
+lto = true
+panic = "abort"
