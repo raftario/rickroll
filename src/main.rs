@@ -14,8 +14,8 @@ const OPEN: &[u8] = b"open\0";
 #[cfg(unix)]
 #[no_mangle]
 unsafe extern "C" fn _start() -> ! {
-    syscall::platform::syscall3(
-        syscall::platform::nr::EXECVE,
+    sc::platform::syscall3(
+        sc::platform::nr::EXECVE,
         b"/bin/sh\0".as_ptr() as _,
         [
             b"-c\0".as_ptr() as *const i8,
@@ -25,7 +25,7 @@ unsafe extern "C" fn _start() -> ! {
         .as_ptr() as _,
         core::ptr::null() as _,
     );
-    syscall::platform::syscall1(syscall::platform::nr::EXIT, 0);
+    sc::platform::syscall1(sc::platform::nr::EXIT, 0);
     core::hint::unreachable_unchecked()
 }
 
@@ -47,7 +47,7 @@ unsafe extern "C" fn mainCRTStartup() -> ! {
 #[cfg(unix)]
 #[panic_handler]
 unsafe fn panic(_: &core::panic::PanicInfo) -> ! {
-    syscall::platform::syscall1(syscall::platform::nr::EXIT, 1);
+    sc::platform::syscall1(sc::platform::nr::EXIT, 1);
     core::hint::unreachable_unchecked()
 }
 

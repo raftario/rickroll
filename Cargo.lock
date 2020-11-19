@@ -4,15 +4,15 @@
 name = "rickroll"
 version = "0.1.0"
 dependencies = [
- "syscall",
+ "sc",
  "winapi",
 ]
 
 [[package]]
-name = "syscall"
-version = "0.2.1"
+name = "sc"
+version = "0.2.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "dae2c4de039bf338dd96f46621f20222c4101045dac5403b46f472608cb5b556"
+checksum = "176365c8253e381ad147774b6d9730a1b3fe2d7db498af521ed7d968674a55b3"
 
 [[package]]
 name = "winapi"
