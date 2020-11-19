@@ -12,6 +12,11 @@ const OPEN: &[u8] = b"open\0";
 const OPEN: &[u8] = b"open\0";
 
 #[cfg(unix)]
+extern "C" {
+    static environ: *mut *mut i8;
+}
+
+#[cfg(unix)]
 #[no_mangle]
 unsafe extern "C" fn _start() -> ! {
     sc::platform::syscall3(
@@ -23,7 +28,7 @@ unsafe extern "C" fn _start() -> ! {
             URL.as_ptr() as *const i8,
         ]
         .as_ptr() as _,
-        core::ptr::null() as _,
+        environ as _,
     );
     sc::platform::syscall1(sc::platform::nr::EXIT, 0);
     core::hint::unreachable_unchecked()
