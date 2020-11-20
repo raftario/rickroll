@@ -26,9 +26,9 @@ const ARGV: &[*const i8] = &[
 #[cfg(unix)]
 #[no_mangle]
 unsafe extern "C" fn _start() -> ! {
-    let argc: *const usize;
-    asm!(out("rsp") argc);
-    let envp = 8 + 8 + (8 * *argc) + argc as usize;
+    let rsp: *const usize;
+    asm!("mov {}, rsp", out(reg) rsp, options(nomem, nostack));
+    let envp = 8 + 8 + (8 * *rsp) + rsp as usize;
 
     sc::platform::syscall3(
         sc::platform::nr::EXECVE,
