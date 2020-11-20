@@ -5,7 +5,6 @@ rustflags = [
 
 [target.x86_64-apple-darwin]
 rustflags = [
-    "-C", "link-arg=-e=__start",
     "-C", "link-arg=-static",
     "-C", "link-arg=-nostartfiles",
 ]
