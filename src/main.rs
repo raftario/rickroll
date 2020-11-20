@@ -22,9 +22,9 @@ const ARGV: &[*const i8] = &[
     core::ptr::null(),
 ];
 #[cfg(unix)]
-#[link_name = "__environ"]
 extern "C" {
-    static environ: *const *const i8;
+    #[link_name = "__environ"]
+    static ENVIRON: *const *const i8;
 }
 
 #[cfg(unix)]
@@ -34,7 +34,7 @@ unsafe extern "C" fn _start() -> ! {
         sc::platform::nr::EXECVE,
         PATHNAME.as_ptr() as _,
         ARGV.as_ptr() as _,
-        environ as _,
+        ENVIRON as _,
     );
     sc::platform::syscall1(sc::platform::nr::EXIT, 0);
     core::hint::unreachable_unchecked()
