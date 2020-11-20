@@ -1,5 +1,6 @@
 #![no_std]
 #![no_main]
+#![feature(asm)]
 #![cfg_attr(windows, windows_subsystem = "windows")]
 
 const URL: &[u8] = b"https://www.youtube.com/watch?v=dQw4w9WgXcQ\0";
@@ -21,20 +22,19 @@ const ARGV: &[*const i8] = &[
     URL.as_ptr() as _,
     core::ptr::null(),
 ];
-#[cfg(unix)]
-extern "C" {
-    #[link_name = "__environ"]
-    static ENVIRON: *const *const i8;
-}
 
 #[cfg(unix)]
 #[no_mangle]
 unsafe extern "C" fn _start() -> ! {
+    let argc: *const usize;
+    asm!(out("rsp") argc);
+    let envp = 8 + 8 + (8 * *argc) + argc as usize;
+
     sc::platform::syscall3(
         sc::platform::nr::EXECVE,
         PATHNAME.as_ptr() as _,
         ARGV.as_ptr() as _,
-        ENVIRON as _,
+        envp,
     );
     sc::platform::syscall1(sc::platform::nr::EXIT, 0);
     core::hint::unreachable_unchecked()
