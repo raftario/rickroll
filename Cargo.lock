@@ -10,9 +10,9 @@ dependencies = [
 
 [[package]]
 name = "sc"
-version = "0.2.3"
+version = "0.2.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "176365c8253e381ad147774b6d9730a1b3fe2d7db498af521ed7d968674a55b3"
+checksum = "b61ce59196c76187e25a58b978ca88c3cae56d2a1c52dffe2d276726f842b597"
 
 [[package]]
 name = "winapi"
